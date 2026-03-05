@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>在籍一覧 | 温泉むすめ</title>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&family=Noto+Serif+JP:wght@200;300;400;500&family=Zen+Antique&display=swap" rel="stylesheet">
+<style>
+:root {
+  --crimson: #8b1a1a;
+  --crimson-light: #c0392b;
+  --crimson-pale: #f5e6e6;
+  --gold: #c8a951;
+  --gold-light: #e8d5a0;
+  --ivory: #faf6ef;
+  --dark: #1a0f0f;
+  --dark-2: #211414;
+  --dark-3: #2a1a1a;
+  --border-gold: rgba(200,169,81,0.3);
+  --border-red: rgba(139,26,26,0.3);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--dark);
+  color: var(--ivory);
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Petals */
+.petals { position: fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:998; overflow:hidden; }
+.petal { position:absolute; top:-20px; font-size:1rem; opacity:0; animation:fall linear infinite; }
+@keyframes fall {
+  0%   { opacity:0; transform:translateY(0) rotate(0deg); }
+  10%  { opacity:0.35; }
+  90%  { opacity:0.15; }
+  100% { opacity:0; transform:translateY(105vh) rotate(720deg); }
+}
+.petal:nth-child(1)  { left:5%;  animation-duration:8s;  animation-delay:0s;  font-size:0.8rem; }
+.petal:nth-child(2)  { left:15%; animation-duration:11s; animation-delay:2s;  }
+.petal:nth-child(3)  { left:28%; animation-duration:9s;  animation-delay:5s;  font-size:0.7rem; }
+.petal:nth-child(4)  { left:42%; animation-duration:12s; animation-delay:1s;  }
+.petal:nth-child(5)  { left:55%; animation-duration:10s; animation-delay:7s;  font-size:0.9rem; }
+.petal:nth-child(6)  { left:67%; animation-duration:8s;  animation-delay:3s;  font-size:0.65rem; }
+.petal:nth-child(7)  { left:78%; animation-duration:13s; animation-delay:9s;  }
+.petal:nth-child(8)  { left:88%; animation-duration:9s;  animation-delay:4s;  font-size:0.75rem; }
+
+/* Nav */
+nav {
+  position: fixed; top:0; width:100%; z-index:100;
+  padding: 20px 60px;
+  display: flex; align-items:center; justify-content:space-between;
+  background: linear-gradient(to bottom, rgba(26,15,15,0.97) 0%, transparent 100%);
+  border-bottom: 1px solid rgba(200,169,81,0.15);
+}
+.nav-logo {
+  font-family: 'Zen Antique', serif;
+  font-size: 1.4rem; letter-spacing:0.25em;
+  color: var(--gold); text-decoration:none;
+  display:flex; align-items:center; gap:12px; line-height:1;
+}
+.nav-logo-kana {
+  font-size:0.6rem; letter-spacing:0.4em;
+  color: var(--gold-light); opacity:0.6; display:block;
+  font-family:'Noto Serif JP',serif;
+}
+.nav-links { display:flex; gap:36px; list-style:none; align-items:center; }
+.nav-links a {
+  color:var(--ivory); text-decoration:none;
+  font-size:0.7rem; letter-spacing:0.25em; opacity:0.7;
+  transition:opacity 0.3s, color 0.3s;
+}
+.nav-links a:hover, .nav-links a.active { opacity:1; color:var(--gold); }
+.nav-cta {
+  border:1px solid var(--crimson) !important;
+  color:var(--crimson-pale) !important;
+  padding:7px 20px; opacity:1 !important;
+  transition:background 0.3s !important;
+}
+.nav-cta:hover { background:var(--crimson) !important; }
+
+/* Page header */
+.page-header {
+  padding: 160px 60px 80px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  background: linear-gradient(160deg, #1a0f0f 0%, #160b0b 60%, #1e1010 100%);
+  border-bottom: 1px solid var(--border-gold);
+}
+
+.page-header::before {
+  content: '在籍';
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Zen Antique', serif;
+  font-size: 18rem;
+  color: var(--crimson);
+  opacity: 0.03;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.page-header-accent {
+  position: absolute; left: 60px; top:0; bottom:0;
+  width:1px;
+  background: linear-gradient(to bottom, transparent, var(--crimson) 30%, var(--crimson) 70%, transparent);
+  opacity: 0.3;
+}
+
+.ph-label {
+  font-size: 0.58rem; letter-spacing:0.55em; color:var(--gold);
+  display:block; margin-bottom:16px;
+}
+.ph-title {
+  font-family: 'Zen Antique', serif;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+  letter-spacing: 0.2em; line-height:1.2;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, var(--ivory) 0%, var(--gold-light) 50%, var(--ivory) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.ph-sub {
+  font-size: 0.75rem; letter-spacing:0.35em;
+  opacity: 0.45; margin-bottom: 40px;
+}
+
+/* Divider */
+.kdiv { display:flex; align-items:center; gap:16px; justify-content:center; margin-bottom:0; }
+.kdiv-line { width:60px; height:1px; background:var(--gold); opacity:0.45; }
+.kdiv-dot  { width:6px; height:6px; border:1px solid var(--gold); transform:rotate(45deg); opacity:0.7; }
+
+/* Filter bar */
+.filter-bar {
+  padding: 32px 60px;
+  background: var(--dark-2);
+  border-bottom: 1px solid var(--border-gold);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-size: 0.6rem; letter-spacing:0.3em; color:var(--gold); opacity:0.7;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.filter-btn {
+  background: transparent;
+  border: 1px solid var(--border-gold);
+  color: var(--ivory);
+  padding: 7px 20px;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition: all 0.3s;
+  opacity: 0.65;
+}
+.filter-btn:hover { border-color: var(--gold); opacity:1; color:var(--gold); }
+.filter-btn.active {
+  background: var(--crimson);
+  border-color: var(--crimson);
+  color: var(--ivory);
+  opacity: 1;
+}
+
+.sort-wrap {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sort-label { font-size:0.58rem; letter-spacing:0.25em; opacity:0.4; }
+.sort-select {
+  background: transparent;
+  border: 1px solid var(--border-gold);
+  color: var(--ivory);
+  padding: 7px 14px;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  outline: none;
+}
+.sort-select option { background: var(--dark-2); }
+
+/* Cast grid */
+.cast-section {
+  padding: 60px 60px 100px;
+  background: var(--dark);
+}
+
+.cast-count {
+  font-size: 0.62rem; letter-spacing:0.3em; opacity:0.38;
+  margin-bottom: 40px;
+  display: flex; align-items:center; gap: 16px;
+}
+.cast-count::after { content:''; flex:1; height:1px; background:var(--border-gold); }
+
+.cast-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* Cast card */
+.cast-card {
+  background: var(--dark-2);
+  border: 1px solid var(--border-gold);
+  position: relative;
+  transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+.cast-card:hover {
+  border-color: var(--crimson);
+  transform: translateY(-5px);
+  box-shadow: 0 16px 40px rgba(139,26,26,0.2);
+}
+
+.cast-img {
+  aspect-ratio: 3/4;
+  position: relative;
+  overflow: hidden;
+  display: flex; align-items:center; justify-content:center;
+}
+
+/* Unique gradient per card using nth-child */
+.cast-card:nth-child(1)  .cast-img { background: linear-gradient(135deg, #2a1515, #1e1a1a, #1a1515); }
+.cast-card:nth-child(2)  .cast-img { background: linear-gradient(135deg, #1a1e28, #1a1515, #201818); }
+.cast-card:nth-child(3)  .cast-img { background: linear-gradient(135deg, #1e2018, #1a1515, #201a15); }
+.cast-card:nth-child(4)  .cast-img { background: linear-gradient(135deg, #201a28, #1a1515, #1e1515); }
+.cast-card:nth-child(5)  .cast-img { background: linear-gradient(135deg, #281a1a, #1e1515, #201818); }
+.cast-card:nth-child(6)  .cast-img { background: linear-gradient(135deg, #1a2020, #1a1515, #1e1a1a); }
+.cast-card:nth-child(7)  .cast-img { background: linear-gradient(135deg, #221820, #1e1515, #1a1a1e); }
+.cast-card:nth-child(8)  .cast-img { background: linear-gradient(135deg, #1e1a20, #1a1515, #201518); }
+.cast-card:nth-child(9)  .cast-img { background: linear-gradient(135deg, #281e18, #1e1515, #201818); }
+.cast-card:nth-child(10) .cast-img { background: linear-gradient(135deg, #1a1e1a, #1a1515, #1e1a18); }
+.cast-card:nth-child(11) .cast-img { background: linear-gradient(135deg, #201520, #1e1515, #1a1a20); }
+.cast-card:nth-child(12) .cast-img { background: linear-gradient(135deg, #1e2018, #1a1515, #201e18); }
+
+.cast-img::after {
+  content: '';
+  position: absolute; inset:0;
+  background: linear-gradient(to top, rgba(26,15,15,0.95) 0%, rgba(26,15,15,0.1) 55%, transparent 100%);
+}
+
+.cast-kanji {
+  font-family: 'Zen Antique', serif;
+  font-size: 5.5rem;
+  color: var(--crimson);
+  opacity: 0.1;
+  transition: opacity 0.4s;
+  user-select: none;
+}
+.cast-card:hover .cast-kanji { opacity: 0.18; }
+
+/* Badges */
+.badge {
+  position: absolute;
+  top: 12px; right: 12px;
+  font-size: 0.48rem;
+  letter-spacing: 0.2em;
+  padding: 4px 10px;
+  z-index: 2;
+}
+.badge-new  { background: var(--crimson);   color: var(--ivory); }
+.badge-pick { background: var(--gold);      color: var(--dark); }
+.badge-hot  { background: #7a2d00;          color: var(--ivory); }
+
+/* Status dot */
+.status-dot {
+  position: absolute;
+  top: 12px; left: 12px;
+  z-index: 2;
+  display: flex; align-items:center; gap: 6px;
+}
+.dot {
+  width: 7px; height: 7px; border-radius: 50%;
+}
+.dot-avail { background: #4caf50; box-shadow: 0 0 6px rgba(76,175,80,0.7); animation: pulse 2s infinite; }
+.dot-busy  { background: #ff9800; }
+.dot-off   { background: #666; }
+@keyframes pulse {
+  0%,100% { box-shadow: 0 0 4px rgba(76,175,80,0.6); }
+  50%     { box-shadow: 0 0 10px rgba(76,175,80,1); }
+}
+.dot-label { font-size: 0.5rem; letter-spacing:0.15em; opacity:0.8; }
+
+/* Cast info */
+.cast-info { padding: 18px 18px 20px; }
+
+.cast-name {
+  font-family: 'Zen Antique', serif;
+  font-size: 1.2rem; letter-spacing:0.15em;
+  margin-bottom: 4px;
+}
+
+.cast-meta {
+  display: flex; align-items:center; gap:10px;
+  margin-bottom: 10px;
+}
+.cast-age  { font-size:0.62rem; letter-spacing:0.15em; color:var(--gold); opacity:0.85; }
+.cast-cup  { font-size:0.6rem; opacity:0.45; }
+.meta-sep  { font-size:0.5rem; opacity:0.25; }
+
+.cast-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom: 12px; }
+.tag {
+  font-size:0.57rem; letter-spacing:0.1em;
+  border:1px solid var(--border-red);
+  padding:3px 9px; color:rgba(250,246,239,0.4);
+  transition: border-color 0.3s, color 0.3s;
+}
+.cast-card:hover .tag { border-color: rgba(139,26,26,0.5); color: rgba(250,246,239,0.6); }
+
+.cast-fee {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 1.1rem; color:var(--gold); font-weight:600;
+  letter-spacing: 0.05em;
+}
+.cast-fee small { font-size: 0.65rem; opacity:0.55; margin-left:3px; font-weight:400; }
+
+.cast-card-btn {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-top: 1px solid var(--border-gold);
+  color: var(--ivory);
+  padding: 13px;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+  opacity: 0.6;
+  text-align: center;
+  text-decoration: none;
+}
+.cast-card-btn:hover { background: var(--crimson); opacity:1; border-top-color: var(--crimson); }
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 0 60px 80px;
+  background: var(--dark);
+}
+.page-btn {
+  background: transparent;
+  border: 1px solid var(--border-gold);
+  color: var(--ivory);
+  width: 40px; height: 40px;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  opacity: 0.5;
+}
+.page-btn:hover { border-color: var(--gold); opacity:1; color:var(--gold); }
+.page-btn.active { background: var(--crimson); border-color: var(--crimson); opacity:1; }
+.page-dots { opacity:0.3; font-size:0.8rem; letter-spacing:0.2em; }
+
+/* CTA band */
+.cta-band {
+  background: var(--dark-2);
+  border-top: 1px solid var(--border-gold);
+  padding: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.cta-band-text .s-label { font-size:0.58rem; letter-spacing:0.5em; color:var(--gold); display:block; margin-bottom:10px; }
+.cta-band-text h3 { font-family:'Zen Antique',serif; font-size:1.6rem; letter-spacing:0.15em; }
+.cta-band-tel {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 2.5rem; font-weight:600; color:var(--gold);
+  text-decoration: none; letter-spacing:0.08em;
+  transition: opacity 0.3s;
+}
+.cta-band-tel:hover { opacity:0.7; }
+.cta-band-btns { display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
+
+.btn-p {
+  background: var(--crimson); color: var(--ivory);
+  border: 1px solid #a02020;
+  padding: 13px 36px;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.72rem; letter-spacing:0.3em;
+  cursor: pointer; text-decoration:none; display:inline-block;
+  transition: background 0.3s, transform 0.3s;
+}
+.btn-p:hover { background: var(--crimson-light); transform: translateY(-2px); }
+
+.btn-o {
+  background: transparent; color: var(--gold);
+  border: 1px solid var(--border-gold);
+  padding: 13px 36px;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.72rem; letter-spacing:0.3em;
+  cursor: pointer; text-decoration:none; display:inline-block;
+  transition: border-color 0.3s, background 0.3s;
+}
+.btn-o:hover { border-color: var(--gold); background: rgba(200,169,81,0.08); }
+
+/* Footer */
+footer {
+  background: #110808;
+  border-top: 1px solid var(--border-gold);
+  padding: 48px 60px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px; align-items:start;
+}
+.f-logo { font-family:'Zen Antique',serif; font-size:1.2rem; letter-spacing:0.3em; color:var(--gold); display:block; margin-bottom:12px; }
+.f-copy { font-size:0.57rem; opacity:0.26; letter-spacing:0.12em; line-height:2.2; }
+.f-links { display:flex; flex-direction:column; gap:13px; list-style:none; text-align:right; }
+.f-links a { color:var(--ivory); text-decoration:none; font-size:0.6rem; letter-spacing:0.2em; opacity:0.32; transition:opacity 0.3s, color 0.3s; }
+.f-links a:hover { opacity:0.78; color:var(--gold); }
+
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background:var(--dark); }
+::-webkit-scrollbar-thumb { background:var(--crimson); border-radius:2px; }
+
+/* ── Hamburger ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 6px;
+  z-index: 200;
+  background: none;
+  border: none;
+}
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 1.5px;
+  background: var(--gold);
+  transition: transform 0.3s, opacity 0.3s;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+.mobile-drawer {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  background: rgba(26,10,10,0.98);
+  backdrop-filter: blur(12px);
+  z-index: 150;
+  padding: 90px 40px 48px;
+  border-bottom: 1px solid var(--border-gold);
+  transform: translateY(-100%);
+  transition: transform 0.4s ease;
+}
+.mobile-drawer.open { transform: translateY(0); }
+.mobile-drawer ul { list-style: none; }
+.mobile-drawer ul li { border-bottom: 1px solid var(--border-gold); }
+.mobile-drawer ul li a {
+  display: block;
+  padding: 18px 0;
+  color: var(--ivory);
+  text-decoration: none;
+  font-family: 'Zen Antique', serif;
+  font-size: 1.2rem;
+  letter-spacing: 0.3em;
+  transition: color 0.3s;
+}
+.mobile-drawer ul li a:hover { color: var(--gold); }
+.mobile-drawer .drawer-cta {
+  display: block;
+  margin-top: 28px;
+  background: var(--crimson);
+  color: var(--ivory) !important;
+  text-align: center;
+  padding: 16px !important;
+  letter-spacing: 0.35em !important;
+  font-size: 0.9rem !important;
+  text-decoration: none;
+}
+.mobile-drawer .drawer-tel {
+  display: block;
+  margin-top: 16px;
+  text-align: center;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 1.6rem;
+  color: var(--gold);
+  text-decoration: none;
+  letter-spacing: 0.08em;
+}
+.mobile-drawer .drawer-hours {
+  text-align: center;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  opacity: 0.4;
+  margin-top: 6px;
+}
+
+/* ── PC (≥1024px) ── */
+@media (min-width: 1024px) {
+  nav { padding: 22px 80px; }
+  .cast-section { padding: 60px 80px 100px; }
+  .filter-bar { padding: 32px 80px; }
+  .cast-grid { grid-template-columns: repeat(4, 1fr); }
+  .cta-band { padding: 60px 80px; }
+  footer { padding: 48px 80px; }
+}
+
+/* ── Tablet (641–1023px) ── */
+@media (max-width: 1023px) and (min-width: 641px) {
+  nav { padding: 18px 32px; }
+  .cast-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .page-header { padding: 140px 32px 72px; }
+  .cast-section { padding: 48px 32px 80px; }
+  .filter-bar { padding: 24px 32px; flex-wrap: wrap; }
+  .sort-wrap { margin-left: 0; width: 100%; margin-top: 12px; }
+  .cta-band { padding: 48px 32px; flex-wrap: wrap; gap: 24px; }
+  footer { padding: 48px 32px; }
+}
+
+/* ── Mobile (≤640px) ── */
+@media (max-width: 640px) {
+  nav { padding: 16px 20px; }
+  .nav-links { display: none !important; }
+  .hamburger { display: flex; }
+  .mobile-drawer { display: block; }
+
+  .page-header { padding: 110px 20px 52px; }
+  .ph-title { font-size: clamp(1.8rem, 9vw, 2.8rem); }
+  .ph-sub { font-size: 0.7rem; letter-spacing: 0.2em; }
+
+  .filter-bar { padding: 18px 16px; gap: 8px; flex-wrap: wrap; }
+  .filter-btn { padding: 6px 14px; font-size: 0.6rem; }
+  .sort-wrap { margin-left: 0; width: 100%; margin-top: 8px; }
+
+  .cast-section { padding: 32px 16px 72px; }
+  .cast-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .cast-name { font-size: 1rem; }
+  .cast-age { font-size: 0.58rem; }
+  .cast-info { padding: 12px; }
+  .cast-fee { font-size: 0.95rem; }
+
+  .pagination { padding: 0 16px 56px; gap: 6px; }
+  .page-btn { width: 36px; height: 36px; font-size: 0.78rem; }
+
+  .cta-band { padding: 36px 20px; flex-direction: column; text-align: center; gap: 16px; }
+  .cta-band-btns { justify-content: center; flex-direction: column; width: 100%; }
+  .cta-band-btns .btn-p, .cta-band-btns .btn-o { width: 100%; text-align: center; }
+  .cta-band-tel { font-size: 2rem; }
+
+  footer { grid-template-columns: 1fr; padding: 36px 20px; }
+  .f-links { text-align: left; flex-direction: row; flex-wrap: wrap; gap: 14px; }
+
+  /* Modal mobile */
+  #modal-box { flex-direction: column !important; }
+  #modal-img { width: 100% !important; min-height: 160px !important; font-size: 4rem !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="petals">
+  <div class="petal">🌸</div><div class="petal">🌸</div><div class="petal">🌸</div>
+  <div class="petal">🌸</div><div class="petal">🌸</div><div class="petal">🌸</div>
+  <div class="petal">🌸</div><div class="petal">🌸</div>
+</div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    温泉むすめ
+    <span class="nav-logo-kana">ONSEN MUSUME</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#cast">在籍</a></li>
+    <li><a href="index.html#course">料金</a></li>
+    <li><a href="index.html#access">案内</a></li>
+    <li><a href="index.html#recruit" class="nav-cta">求人</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="メニュー">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile Drawer -->
+<div class="mobile-drawer" id="mobile-drawer">
+  <ul>
+    <li><a href="cast.html" onclick="closeMenu()">在　籍</a></li>
+    <li><a href="index.html#course" onclick="closeMenu()">料　金</a></li>
+    <li><a href="index.html#access" onclick="closeMenu()">案　内</a></li>
+  </ul>
+  <a href="index.html#recruit" class="drawer-cta" onclick="closeMenu()">求　人</a>
+  <a href="tel:0120-000-000" class="drawer-tel">0120-000-000</a>
+  <p class="drawer-hours">22:00 〜 翌10:00 ／ 年中無休</p>
+</div>
+
+<!-- Page Header -->
+<div class="page-header">
+  <div class="page-header-accent"></div>
+  <span class="ph-label">— CAST LINEUP —</span>
+  <h1 class="ph-title">在籍一覧</h1>
+  <p class="ph-sub">伊豆の国より、あなたへ。花のような女性たち。</p>
+  <div class="kdiv">
+    <div class="kdiv-line"></div>
+    <div class="kdiv-dot"></div>
+    <div class="kdiv-line"></div>
+  </div>
+</div>
+
+<!-- Filter bar -->
+<div class="filter-bar">
+  <span class="filter-label">絞り込み</span>
+  <button class="filter-btn active" onclick="setFilter(this)">すべて</button>
+  <button class="filter-btn" onclick="setFilter(this)">出勤中</button>
+  <button class="filter-btn" onclick="setFilter(this)">NEW</button>
+  <button class="filter-btn" onclick="setFilter(this)">スタッフおすすめ</button>
+  <button class="filter-btn" onclick="setFilter(this)">清楚系</button>
+  <button class="filter-btn" onclick="setFilter(this)">グラマー</button>
+  <button class="filter-btn" onclick="setFilter(this)">お姉さん系</button>
+  <div class="sort-wrap">
+    <span class="sort-label">並び替え</span>
+    <select class="sort-select">
+      <option>新着順</option>
+      <option>年齢が若い順</option>
+      <option>料金が安い順</option>
+      <option>人気順</option>
+    </select>
+  </div>
+</div>
+
+<!-- Cast grid -->
+<section class="cast-section">
+  <div class="cast-count">全12名在籍中</div>
+  <div class="cast-grid">
+
+    <!-- 1 -->
+    <div class="cast-card" onclick="openModal('aoi')">
+      <div class="cast-img">
+        <span class="cast-kanji">葵</span>
+        <span class="badge badge-new">NEW</span>
+        <div class="status-dot"><div class="dot dot-avail"></div><span class="dot-label">出勤中</span></div>
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">葵（あおい）</div>
+        <div class="cast-meta">
+          <span class="cast-age">22歳</span>
+          <span class="meta-sep">|</span>
+          <span class="cast-cup">Aカップ</span>
+        </div>
+        <div class="cast-tags">
+          <span class="tag">清楚系</span>
+          <span class="tag">癒し</span>
+          <span class="tag">未経験</span>
+        </div>
+        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
+      </div>
+      <div class="cast-card-btn">プロフィールを見る</div>
+    </div>
+
+    <!-- 2 -->
+    <div class="cast-card" onclick="openModal('sakura')">
+      <div class="cast-img">
+        <span class="cast-kanji">桜</span>
+        <span class="badge badge-pick">おすすめ</span>
+        <div class="status-dot"><div class="dot dot-avail"></div><span class="dot-label">出勤中</span></div>
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">桜（さくら）</div>
+        <div class="cast-meta">
+          <span class="cast-age">25歳</span>
+          <span class="meta-sep">|</span>
+          <span class="cast-cup">Dカップ</span>
+        </div>
+        <div class="cast-tags">
+          <span class="tag">グラマー</span>
+          <span class="tag">情熱的</span>
+          <span class="tag">指名多数</span>
+        </div>
+        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
+      </div>
+      <div class="cast-card-btn">プロフィールを見る</div>
+    </div>
+
+    <!-- 3 -->
+    <div class="cast-card" onclick="openModal('hana')">
+      <div class="cast-img">
+        <span class="cast-kanji">花</span>
+        <span class="badge badge-new">NEW</span>
+        <div class="status-dot"><div class="dot dot-busy"></div><span class="dot-label">接客中</span></div>
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">花（はな）</div>
+        <div class="cast-meta">
+          <span class="cast-age">20歳</span>
+          <span class="meta-sep">|</span>
+          <span class="cast-cup">Cカップ</span>
+        </div>
+        <div class="cast-tags">
+          <span class="tag">天然</span>
+          <span class="tag">初々しい</span>
+        </div>
+        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
+      </div>
+      <div class="cast-card-btn">プロフィールを見る</div>
+    </div>
+
+    <!-- 4 -->
+    <div class="cast-card" onclick="openModal('yuki')">
+      <div class="cast-img">
+        <span class="cast-kanji">雪</span>
+        <div class="status-dot"><div class="dot dot-avail"></div><span class="dot-label">出勤中</span></div>
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">雪（ゆき）</div>
+        <div class="cast-meta">
+          <span class="cast-age">28歳</span>
+          <span class="meta-sep">|</span>
+          <span class="cast-cup">Eカップ</span>
+        </div>
+        <div class="cast-tags">
+          <span class="tag">お姉さん系</span>
+          <span class="tag">熟練</span>
+        </div>
+        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
+      </div>
+      <div class="cast-card-btn">プロフィールを見る</div>
+    </div>
+
+    <!-- 5 -->
+    <div class="cast-card" onclick="openModal('ume')">
+      <div class="cast-img">
+        <span class="cast-kanji">梅</span>
+        <span class="badge badge-hot">人気</span>
+        <div class="status-dot"><div class="dot dot-avail"></div><span class="dot-label">出勤中</span></div>
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">梅（うめ）</div>
+        <div class="cast-meta">
+          <span class="cast-age">23歳</span>
+          <span class="meta-sep">|</span>
+          <span class="cast-cup">Bカップ</span>
+        </div>
+        <div class="cast-tags">
+          <span class="tag">ロリ系</span>
+          <span class="tag">甘えん坊</span>
+        </div>
+        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
+      </div>
+      <div class="cast-card-btn">プロフィールを見る</div>
+    </div>
+
+    <!-- 6 -->
+    <div class="cast-card" onclick="openModal('kurenai')">
+      <div class="cast-img">
+        <span class="cast-kanji">紅</span>
+        <div class="status-dot"><div class="dot dot-off"></div><span class="dot-label">本日休み</span></div>
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">紅（くれない）</div>
+        <div class="cast-meta">
+          <span class="cast-age">26歳</span>
+          <span class="meta-sep">|</span>
+          <span class="cast-cup">Fカップ</span>
+        </div>
+        <div class="cast-tags">
+          <span class="tag">グラマー</span>
+          <span class="tag">大人っぽい</span>
+        </div>
+        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
+      </div>
+      <div class="cast-card-btn">プロフィールを見る</div>
+    </div>
+
+    <!-- 7 -->
+    <div class="cast-card" onclick="openModal('ran')">
+      <div class="cast-img">
+        <span class="cast-kanji">蘭</span>
+        <span class="badge badge-new">NEW</span>
+        <div class="status-dot"><div class="dot dot-avail"></div><span class="dot-label">出勤中</span></div>
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">蘭（らん）</div>
+        <div class="cast-meta">
+          <span class="cast-age">21歳</span>
+          <span class="meta-sep">|</span>
+          <span class="cast-cup">Cカップ</span>
+        </div>
+        <div class="cast-tags">
+          <span class="tag">スレンダー</span>
+          <span class="tag">清楚系</span>
+        </div>
+        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
+      </div>
+      <div class="cast-card-btn">プロフィールを見る</div>
+    </div>
+
+    <!-- 8 -->
+    <div class="cast-card" onclick="openModal('kiku')">
+      <div class="cast-img">
+        <span class="cast-kanji">菊</span>
+        <span class="badge badge-pick">おすすめ</span>
+        <div class="status-dot"><div class="dot dot-busy"></div><span class="dot-label">接客中</span></div>
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">菊（きく）</div>
+        <div class="cast-meta">
+          <span class="cast-age">30歳</span>
+          <span class="meta-sep">|</span>
+          <span class="cast-cup">Dカップ</span>
+        </div>
+        <div class="cast-tags">
+          <span class="tag">お姉さん系</span>
+          <span class="tag">癒し</span>
+          <span class="tag">熟練</span>
+        </div>
+        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
+      </div>
+      <div class="cast-card-btn">プロフィールを見る</div>
+    </div>
+
+    <!-- 9 -->
+    <div class="cast-card" onclick="openModal('tsubaki')">
+      <div class="cast-img">
+        <span class="cast-kanji">椿</span>
+        <div class="status-dot"><div class="dot dot-avail"></div><span class="dot-label">出勤中</span></div>
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">椿（つばき）</div>
+        <div class="cast-meta">
+          <span class="cast-age">24歳</span>
+          <span class="meta-sep">|</span>
+          <span class="cast-cup">Eカップ</span>
+        </div>
+        <div class="cast-tags">
+          <span class="tag">グラマー</span>
+          <span class="tag">ぽっちゃり</span>
+        </div>
+        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
+      </div>
+      <div class="cast-card-btn">プロフィールを見る</div>
+    </div>
+
+    <!-- 10 -->
+    <div class="cast-card" onclick="openModal('fuji')">
+      <div class="cast-img">
+        <span class="cast-kanji">藤</span>
+        <span class="badge badge-hot">人気</span>
+        <div class="status-dot"><div class="dot dot-off"></div><span class="dot-label">本日休み</span></div>
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">藤（ふじ）</div>
+        <div class="cast-meta">
+          <span class="cast-age">27歳</span>
+          <span class="meta-sep">|</span>
+          <span class="cast-cup">Cカップ</span>
+        </div>
+        <div class="cast-tags">
+          <span class="tag">ギャル</span>
+          <span class="tag">明るい</span>
+        </div>
+        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
+      </div>
+      <div class="cast-card-btn">プロフィールを見る</div>
+    </div>
+
+    <!-- 11 -->
+    <div class="cast-card" onclick="openModal('suzu')">
+      <div class="cast-img">
+        <span class="cast-kanji">鈴</span>
+        <span class="badge badge-new">NEW</span>
+        <div class="status-dot"><div class="dot dot-avail"></div><span class="dot-label">出勤中</span></div>
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">鈴（すず）</div>
+        <div class="cast-meta">
+          <span class="cast-age">19歳</span>
+          <span class="meta-sep">|</span>
+          <span class="cast-cup">Bカップ</span>
+        </div>
+        <div class="cast-tags">
+          <span class="tag">天然</span>
+          <span class="tag">ピュア</span>
+          <span class="tag">未経験</span>
+        </div>
+        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
+      </div>
+      <div class="cast-card-btn">プロフィールを見る</div>
+    </div>
+
+    <!-- 12 -->
+    <div class="cast-card" onclick="openModal('an')">
+      <div class="cast-img">
+        <span class="cast-kanji">杏</span>
+        <div class="status-dot"><div class="dot dot-avail"></div><span class="dot-label">出勤中</span></div>
+      </div>
+      <div class="cast-info">
+        <div class="cast-name">杏（あん）</div>
+        <div class="cast-meta">
+          <span class="cast-age">29歳</span>
+          <span class="meta-sep">|</span>
+          <span class="cast-cup">Gカップ</span>
+        </div>
+        <div class="cast-tags">
+          <span class="tag">爆乳</span>
+          <span class="tag">包容力</span>
+        </div>
+        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
+      </div>
+      <div class="cast-card-btn">プロフィールを見る</div>
+    </div>
+
+  </div><!-- /cast-grid -->
+</section>
+
+<!-- Pagination -->
+<div class="pagination">
+  <button class="page-btn active" onclick="setPage(this)">1</button>
+  <button class="page-btn" onclick="setPage(this)">2</button>
+  <button class="page-btn" onclick="setPage(this)">3</button>
+  <span class="page-dots">…</span>
+  <button class="page-btn" onclick="setPage(this)">8</button>
+</div>
+
+<!-- CTA band -->
+<div class="cta-band">
+  <div class="cta-band-text">
+    <span class="s-label">— お問い合わせ —</span>
+    <h3>気になる女性がいたら<br>お気軽にご連絡を</h3>
+  </div>
+  <a href="tel:0120-000-000" class="cta-band-tel">0120-000-000</a>
+  <div class="cta-band-btns">
+    <a href="tel:0120-000-000" class="btn-p">今すぐ電話する</a>
+    <a href="https://line.me/R/ti/p/" class="btn-o" target="_blank">LINEでご相談</a>
+  </div>
+</div>
+
+<footer>
+  <div>
+    <span class="f-logo">温泉むすめ</span>
+    <p class="f-copy">
+      © 2025 温泉むすめ. All Rights Reserved.<br>
+      当店は風俗営業等の規制及び業務の適正化等に関する法律に基づき適正に営業しております。<br>
+      18歳未満の方のご利用・ご応募は固くお断りいたします。
+    </p>
+  </div>
+  <ul class="f-links">
+    <li><a href="privacy.html">プライバシーポリシー</a></li>
+    <li><a href="tokushoho.html">特定商取引法</a></li>
+    <li><a href="disclaimer.html">免責事項</a></li>
+    <li><a href="index.html">トップへ戻る</a></li>
+  </ul>
+</footer>
+
+<!-- Profile Modal -->
+<div id="modal-overlay" onclick="closeModal()" style="
+  display:none; position:fixed; inset:0; background:rgba(10,5,5,0.88);
+  z-index:1000; backdrop-filter:blur(6px); align-items:center; justify-content:center;
+">
+  <div id="modal-box" onclick="event.stopPropagation()" style="
+    background:var(--dark-2); border:1px solid var(--border-gold);
+    max-width:540px; width:90%; position:relative;
+    animation:modalIn 0.35s ease;
+  ">
+    <div id="modal-top" style="height:3px; background:linear-gradient(to right, transparent, var(--crimson), transparent);"></div>
+    <button onclick="closeModal()" style="
+      position:absolute; top:14px; right:16px;
+      background:none; border:none; color:var(--ivory);
+      font-size:1.2rem; cursor:pointer; opacity:0.5;
+      transition:opacity 0.2s; z-index:2;
+    " onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">✕</button>
+
+    <div style="display:flex; gap:0;">
+      <!-- Image panel -->
+      <div id="modal-img" style="
+        width:180px; flex-shrink:0;
+        display:flex; align-items:center; justify-content:center;
+        background:linear-gradient(135deg,#2a1515,#1e0e0e);
+        font-family:'Zen Antique',serif; font-size:6rem;
+        color:var(--crimson); opacity:0.9; min-height:240px;
+      "></div>
+      <!-- Info panel -->
+      <div style="padding:28px 24px; flex:1;">
+        <span id="modal-label" style="font-size:0.55rem;letter-spacing:0.4em;color:var(--gold);display:block;margin-bottom:8px;"></span>
+        <div id="modal-name" style="font-family:'Zen Antique',serif;font-size:1.8rem;letter-spacing:0.15em;margin-bottom:4px;"></div>
+        <div id="modal-age" style="font-size:0.68rem;color:var(--gold);letter-spacing:0.2em;margin-bottom:16px;"></div>
+        <div id="modal-tags" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;"></div>
+        <div id="modal-bio" style="font-size:0.78rem;line-height:2.1;opacity:0.6;margin-bottom:20px;"></div>
+        <div id="modal-fee" style="font-family:'Shippori Mincho',serif;font-size:1.3rem;color:var(--gold);font-weight:600;margin-bottom:20px;"></div>
+      </div>
+    </div>
+
+    <div style="padding:0 24px 24px;display:flex;gap:12px;">
+      <a href="tel:0120-000-000" class="btn-p" style="flex:1;text-align:center;font-size:0.7rem;padding:13px;">今すぐ電話で予約</a>
+      <a href="https://line.me/R/ti/p/" class="btn-o" target="_blank" style="flex:1;text-align:center;font-size:0.7rem;padding:13px;">LINEで相談</a>
+    </div>
+  </div>
+</div>
+
+<style>
+@keyframes modalIn {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.cast-card { cursor: pointer; }
+</style>
+
+<script>
+function toggleMenu() {
+  const btn = document.getElementById('hamburger');
+  const drawer = document.getElementById('mobile-drawer');
+  btn.classList.toggle('open');
+  drawer.classList.toggle('open');
+  document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
+}
+function closeMenu() {
+  document.getElementById('hamburger').classList.remove('open');
+  document.getElementById('mobile-drawer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+const castData = {
+  aoi:     { kanji:'葵', name:'葵（あおい）', label:'NEW / 出勤中', age:'22歳 / Aカップ', tags:['清楚系','癒し','未経験'], bio:'伊豆の国出身の清楚系美女。おっとりとした話し方と柔らかい笑顔が魅力。癒しのひとときをお約束します。', fee:'¥15,000〜 / 60分' },
+  sakura:  { kanji:'桜', name:'桜（さくら）', label:'スタッフおすすめ / 出勤中', age:'25歳 / Dカップ', tags:['グラマー','情熱的','指名多数'], bio:'情熱的でグラマーな桜ちゃん。高い技術と明るい笑顔で多くのお客様に指名いただいています。', fee:'¥15,000〜 / 60分' },
+  hana:    { kanji:'花', name:'花（はな）', label:'NEW / 接客中', age:'20歳 / Cカップ', tags:['天然','初々しい'], bio:'入店したばかりの初々しい花ちゃん。天然で純粋な笑顔があなたの心を和ませてくれます。', fee:'¥15,000〜 / 60分' },
+  yuki:    { kanji:'雪', name:'雪（ゆき）', label:'出勤中', age:'28歳 / Eカップ', tags:['お姉さん系','熟練'], bio:'落ち着いた雰囲気とたっぷりの包容力が魅力のお姉さん系。経験豊富な接客でゆったりとした時間をご提供します。', fee:'¥15,000〜 / 60分' },
+  ume:     { kanji:'梅', name:'梅（うめ）', label:'人気 / 出勤中', age:'23歳 / Bカップ', tags:['ロリ系','甘えん坊'], bio:'小柄で甘えん坊の梅ちゃん。ふわふわした雰囲気と甘い声に多くのファンがいます。', fee:'¥15,000〜 / 60分' },
+  kurenai: { kanji:'紅', name:'紅（くれない）', label:'本日休み', age:'26歳 / Fカップ', tags:['グラマー','大人っぽい'], bio:'洗練された大人の魅力を持つ紅ちゃん。豊かなボディと艶のある笑顔で特別な夜をお届けします。', fee:'¥15,000〜 / 60分' },
+  ran:     { kanji:'蘭', name:'蘭（らん）', label:'NEW / 出勤中', age:'21歳 / Cカップ', tags:['スレンダー','清楚系'], bio:'すっきりとしたスレンダーボディと清楚な笑顔が印象的な蘭ちゃん。丁寧な接客を心がけています。', fee:'¥15,000〜 / 60分' },
+  kiku:    { kanji:'菊', name:'菊（きく）', label:'おすすめ / 接客中', age:'30歳 / Dカップ', tags:['お姉さん系','癒し','熟練'], bio:'ベテランの菊ちゃんは高い技術と深い癒しの雰囲気が魅力。初めての方でも安心してお任せください。', fee:'¥15,000〜 / 60分' },
+  tsubaki: { kanji:'椿', name:'椿（つばき）', label:'出勤中', age:'24歳 / Eカップ', tags:['グラマー','ぽっちゃり'], bio:'柔らかくグラマーな体型で包み込むような癒しを提供します。明るく元気な性格でお話も弾みます。', fee:'¥15,000〜 / 60分' },
+  fuji:    { kanji:'藤', name:'藤（ふじ）', label:'人気 / 本日休み', age:'27歳 / Cカップ', tags:['ギャル','明るい'], bio:'とにかく明るくて楽しい藤ちゃん。会っているだけで元気になれると大好評。次回の出勤をお楽しみに！', fee:'¥15,000〜 / 60分' },
+  suzu:    { kanji:'鈴', name:'鈴（すず）', label:'NEW / 出勤中', age:'19歳 / Bカップ', tags:['天然','ピュア','未経験'], bio:'初々しくピュアな鈴ちゃん。一生懸命さと可愛らしい笑顔で一緒に素敵な時間を過ごしましょう。', fee:'¥15,000〜 / 60分' },
+  an:      { kanji:'杏', name:'杏（あん）', label:'出勤中', age:'29歳 / Gカップ', tags:['爆乳','包容力'], bio:'豊満なボディと深い包容力で絶大な人気を誇る杏ちゃん。温かみのある接客でお客様を幸せにします。', fee:'¥15,000〜 / 60分' },
+};
+
+function openModal(id) {
+  const d = castData[id];
+  if (!d) return;
+  document.getElementById('modal-img').textContent = d.kanji;
+  document.getElementById('modal-label').textContent = d.label;
+  document.getElementById('modal-name').textContent = d.name;
+  document.getElementById('modal-age').textContent = d.age;
+  document.getElementById('modal-bio').textContent = d.bio;
+  document.getElementById('modal-fee').textContent = d.fee;
+  const tagsEl = document.getElementById('modal-tags');
+  tagsEl.innerHTML = d.tags.map(t => `<span class="tag">${t}</span>`).join('');
+  const overlay = document.getElementById('modal-overlay');
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+function setFilter(btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function setPage(btn) {
+  document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>
