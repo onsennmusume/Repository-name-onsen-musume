@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>在籍一覧 | パラダイス伊豆長岡</title>
+<title>キャスト一覧 | パラダイス伊豆長岡</title>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&family=Noto+Serif+JP:wght@200;300;400;500&family=Zen+Antique&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -72,8 +72,8 @@ nav {
   color: var(--gold); text-decoration:none;
   display:flex; align-items:center; gap:12px; line-height:1;
 }
-.nav-logo-kana {
-  font-size:0.6rem; letter-spacing:0.4em;
+.nav-logo-sub {
+  font-size:0.58rem; letter-spacing:0.35em;
   color: var(--gold-light); opacity:0.6; display:block;
   font-family:'Noto Serif JP',serif;
 }
@@ -101,26 +101,23 @@ nav {
   background: linear-gradient(160deg, #1a0f0f 0%, #160b0b 60%, #1e1010 100%);
   border-bottom: 1px solid var(--border-gold);
 }
-
 .page-header::before {
-  content: '在籍';
+  content: 'CAST';
   position: absolute; left: 50%; top: 50%;
   transform: translate(-50%, -50%);
   font-family: 'Zen Antique', serif;
-  font-size: 18rem;
+  font-size: 16rem;
   color: var(--crimson);
   opacity: 0.03;
   pointer-events: none;
   white-space: nowrap;
 }
-
 .page-header-accent {
   position: absolute; left: 60px; top:0; bottom:0;
   width:1px;
   background: linear-gradient(to bottom, transparent, var(--crimson) 30%, var(--crimson) 70%, transparent);
   opacity: 0.3;
 }
-
 .ph-label {
   font-size: 0.58rem; letter-spacing:0.55em; color:var(--gold);
   display:block; margin-bottom:16px;
@@ -137,9 +134,7 @@ nav {
   font-size: 0.75rem; letter-spacing:0.35em;
   opacity: 0.45; margin-bottom: 40px;
 }
-
-/* Divider */
-.kdiv { display:flex; align-items:center; gap:16px; justify-content:center; margin-bottom:0; }
+.kdiv { display:flex; align-items:center; gap:16px; justify-content:center; }
 .kdiv-line { width:60px; height:1px; background:var(--gold); opacity:0.45; }
 .kdiv-dot  { width:6px; height:6px; border:1px solid var(--gold); transform:rotate(45deg); opacity:0.7; }
 
@@ -153,13 +148,10 @@ nav {
   gap: 12px;
   flex-wrap: wrap;
 }
-
 .filter-label {
   font-size: 0.6rem; letter-spacing:0.3em; color:var(--gold); opacity:0.7;
-  margin-right: 8px;
-  flex-shrink: 0;
+  margin-right: 8px; flex-shrink: 0;
 }
-
 .filter-btn {
   background: transparent;
   border: 1px solid var(--border-gold);
@@ -179,12 +171,9 @@ nav {
   color: var(--ivory);
   opacity: 1;
 }
-
 .sort-wrap {
   margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: flex; align-items: center; gap: 10px;
 }
 .sort-label { font-size:0.58rem; letter-spacing:0.25em; opacity:0.4; }
 .sort-select {
@@ -205,14 +194,12 @@ nav {
   padding: 60px 60px 100px;
   background: var(--dark);
 }
-
 .cast-count {
   font-size: 0.62rem; letter-spacing:0.3em; opacity:0.38;
   margin-bottom: 40px;
   display: flex; align-items:center; gap: 16px;
 }
 .cast-count::after { content:''; flex:1; height:1px; background:var(--border-gold); }
-
 .cast-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -232,15 +219,12 @@ nav {
   transform: translateY(-5px);
   box-shadow: 0 16px 40px rgba(139,26,26,0.2);
 }
-
 .cast-img {
   aspect-ratio: 3/4;
   position: relative;
   overflow: hidden;
   display: flex; align-items:center; justify-content:center;
 }
-
-/* Unique gradient per card using nth-child */
 .cast-card:nth-child(1)  .cast-img { background: linear-gradient(135deg, #2a1515, #1e1a1a, #1a1515); }
 .cast-card:nth-child(2)  .cast-img { background: linear-gradient(135deg, #1a1e28, #1a1515, #201818); }
 .cast-card:nth-child(3)  .cast-img { background: linear-gradient(135deg, #1e2018, #1a1515, #201a15); }
@@ -253,13 +237,11 @@ nav {
 .cast-card:nth-child(10) .cast-img { background: linear-gradient(135deg, #1a1e1a, #1a1515, #1e1a18); }
 .cast-card:nth-child(11) .cast-img { background: linear-gradient(135deg, #201520, #1e1515, #1a1a20); }
 .cast-card:nth-child(12) .cast-img { background: linear-gradient(135deg, #1e2018, #1a1515, #201e18); }
-
 .cast-img::after {
   content: '';
   position: absolute; inset:0;
   background: linear-gradient(to top, rgba(26,15,15,0.95) 0%, rgba(26,15,15,0.1) 55%, transparent 100%);
 }
-
 .cast-kanji {
   font-family: 'Zen Antique', serif;
   font-size: 5.5rem;
@@ -289,10 +271,19 @@ nav {
   top: 12px; left: 12px;
   z-index: 2;
   display: flex; align-items:center; gap: 6px;
+  cursor: pointer;
+  background: rgba(26,15,15,0.55);
+  padding: 4px 8px;
+  border-radius: 2px;
+  border: 1px solid rgba(200,169,81,0.15);
+  transition: border-color 0.2s, background 0.2s;
+  user-select: none;
 }
-.dot {
-  width: 7px; height: 7px; border-radius: 50%;
+.status-dot:hover {
+  border-color: rgba(200,169,81,0.45);
+  background: rgba(26,15,15,0.8);
 }
+.dot { width: 7px; height: 7px; border-radius: 50%; }
 .dot-avail { background: #4caf50; box-shadow: 0 0 6px rgba(76,175,80,0.7); animation: pulse 2s infinite; }
 .dot-busy  { background: #ff9800; }
 .dot-off   { background: #666; }
@@ -304,21 +295,17 @@ nav {
 
 /* Cast info */
 .cast-info { padding: 18px 18px 20px; }
-
 .cast-name {
   font-family: 'Zen Antique', serif;
   font-size: 1.2rem; letter-spacing:0.15em;
   margin-bottom: 4px;
 }
-
 .cast-meta {
   display: flex; align-items:center; gap:10px;
   margin-bottom: 10px;
 }
 .cast-age  { font-size:0.62rem; letter-spacing:0.15em; color:var(--gold); opacity:0.85; }
-.cast-cup  { font-size:0.6rem; opacity:0.45; }
 .meta-sep  { font-size:0.5rem; opacity:0.25; }
-
 .cast-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom: 12px; }
 .tag {
   font-size:0.57rem; letter-spacing:0.1em;
@@ -327,14 +314,6 @@ nav {
   transition: border-color 0.3s, color 0.3s;
 }
 .cast-card:hover .tag { border-color: rgba(139,26,26,0.5); color: rgba(250,246,239,0.6); }
-
-.cast-fee {
-  font-family: 'Shippori Mincho', serif;
-  font-size: 1.1rem; color:var(--gold); font-weight:600;
-  letter-spacing: 0.05em;
-}
-.cast-fee small { font-size: 0.65rem; opacity:0.55; margin-left:3px; font-weight:400; }
-
 .cast-card-btn {
   display: block;
   width: 100%;
@@ -356,11 +335,8 @@ nav {
 
 /* Pagination */
 .pagination {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  padding: 0 60px 80px;
+  display: flex; justify-content: center; align-items: center;
+  gap: 8px; padding: 0 60px 80px;
   background: var(--dark);
 }
 .page-btn {
@@ -370,9 +346,7 @@ nav {
   width: 40px; height: 40px;
   font-family: 'Shippori Mincho', serif;
   font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.3s;
-  opacity: 0.5;
+  cursor: pointer; transition: all 0.3s; opacity: 0.5;
 }
 .page-btn:hover { border-color: var(--gold); opacity:1; color:var(--gold); }
 .page-btn.active { background: var(--crimson); border-color: var(--crimson); opacity:1; }
@@ -383,11 +357,9 @@ nav {
   background: var(--dark-2);
   border-top: 1px solid var(--border-gold);
   padding: 60px;
-  display: flex;
-  align-items: center;
+  display: flex; align-items: center;
   justify-content: space-between;
-  gap: 40px;
-  flex-wrap: wrap;
+  gap: 40px; flex-wrap: wrap;
 }
 .cta-band-text .s-label { font-size:0.58rem; letter-spacing:0.5em; color:var(--gold); display:block; margin-bottom:10px; }
 .cta-band-text h3 { font-family:'Zen Antique',serif; font-size:1.6rem; letter-spacing:0.15em; }
@@ -399,7 +371,6 @@ nav {
 }
 .cta-band-tel:hover { opacity:0.7; }
 .cta-band-btns { display:flex; gap:16px; align-items:center; flex-wrap:wrap; }
-
 .btn-p {
   background: var(--crimson); color: var(--ivory);
   border: 1px solid #a02020;
@@ -410,7 +381,6 @@ nav {
   transition: background 0.3s, transform 0.3s;
 }
 .btn-p:hover { background: var(--crimson-light); transform: translateY(-2px); }
-
 .btn-o {
   background: transparent; color: var(--gold);
   border: 1px solid var(--border-gold);
@@ -441,94 +411,56 @@ footer {
 ::-webkit-scrollbar-track { background:var(--dark); }
 ::-webkit-scrollbar-thumb { background:var(--crimson); border-radius:2px; }
 
-/* ── Hamburger ── */
+/* Hamburger */
 .hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  padding: 6px;
-  z-index: 200;
-  background: none;
-  border: none;
+  display: none; flex-direction: column; gap: 5px;
+  cursor: pointer; padding: 6px; z-index: 200;
+  background: none; border: none;
 }
 .hamburger span {
-  display: block;
-  width: 24px;
-  height: 1.5px;
-  background: var(--gold);
-  transition: transform 0.3s, opacity 0.3s;
+  display: block; width: 24px; height: 1.5px;
+  background: var(--gold); transition: transform 0.3s, opacity 0.3s;
 }
 .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
 .hamburger.open span:nth-child(2) { opacity: 0; }
 .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
-
 .mobile-drawer {
-  display: none;
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  background: rgba(26,10,10,0.98);
-  backdrop-filter: blur(12px);
-  z-index: 150;
-  padding: 90px 40px 48px;
+  display: none; position: fixed; top: 0; left: 0; right: 0;
+  background: rgba(26,10,10,0.98); backdrop-filter: blur(12px);
+  z-index: 150; padding: 90px 40px 48px;
   border-bottom: 1px solid var(--border-gold);
-  transform: translateY(-100%);
-  transition: transform 0.4s ease;
+  transform: translateY(-100%); transition: transform 0.4s ease;
 }
 .mobile-drawer.open { transform: translateY(0); }
 .mobile-drawer ul { list-style: none; }
 .mobile-drawer ul li { border-bottom: 1px solid var(--border-gold); }
 .mobile-drawer ul li a {
-  display: block;
-  padding: 18px 0;
-  color: var(--ivory);
-  text-decoration: none;
+  display: block; padding: 18px 0;
+  color: var(--ivory); text-decoration: none;
   font-family: 'Zen Antique', serif;
-  font-size: 1.2rem;
-  letter-spacing: 0.3em;
-  transition: color 0.3s;
+  font-size: 1.2rem; letter-spacing: 0.3em; transition: color 0.3s;
 }
 .mobile-drawer ul li a:hover { color: var(--gold); }
 .mobile-drawer .drawer-cta {
-  display: block;
-  margin-top: 28px;
-  background: var(--crimson);
-  color: var(--ivory) !important;
-  text-align: center;
-  padding: 16px !important;
-  letter-spacing: 0.35em !important;
-  font-size: 0.9rem !important;
+  display: block; margin-top: 28px;
+  background: var(--crimson); color: var(--ivory) !important;
+  text-align: center; padding: 16px !important;
+  letter-spacing: 0.35em !important; font-size: 0.9rem !important;
   text-decoration: none;
-}
-.mobile-drawer .drawer-tel {
-  display: block;
-  margin-top: 16px;
-  text-align: center;
-  font-family: 'Shippori Mincho', serif;
-  font-size: 1.6rem;
-  color: var(--gold);
-  text-decoration: none;
-  letter-spacing: 0.08em;
 }
 .mobile-drawer .drawer-hours {
-  text-align: center;
-  font-size: 0.6rem;
-  letter-spacing: 0.3em;
-  opacity: 0.4;
-  margin-top: 6px;
+  text-align: center; font-size: 0.6rem; letter-spacing: 0.3em;
+  opacity: 0.4; margin-top: 6px;
 }
 
-/* ── PC (≥1024px) ── */
+/* Responsive */
 @media (min-width: 1024px) {
   nav { padding: 22px 80px; }
   .cast-section { padding: 60px 80px 100px; }
   .filter-bar { padding: 32px 80px; }
-  .cast-grid { grid-template-columns: repeat(4, 1fr); }
   .cta-band { padding: 60px 80px; }
   footer { padding: 48px 80px; }
 }
-
-/* ── Tablet (641–1023px) ── */
 @media (max-width: 1023px) and (min-width: 641px) {
   nav { padding: 18px 32px; }
   .cast-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
@@ -539,41 +471,28 @@ footer {
   .cta-band { padding: 48px 32px; flex-wrap: wrap; gap: 24px; }
   footer { padding: 48px 32px; }
 }
-
-/* ── Mobile (≤640px) ── */
 @media (max-width: 640px) {
   nav { padding: 16px 20px; }
   .nav-links { display: none !important; }
   .hamburger { display: flex; }
   .mobile-drawer { display: block; }
-
   .page-header { padding: 110px 20px 52px; }
   .ph-title { font-size: clamp(1.8rem, 9vw, 2.8rem); }
-  .ph-sub { font-size: 0.7rem; letter-spacing: 0.2em; }
-
   .filter-bar { padding: 18px 16px; gap: 8px; flex-wrap: wrap; }
   .filter-btn { padding: 6px 14px; font-size: 0.6rem; }
   .sort-wrap { margin-left: 0; width: 100%; margin-top: 8px; }
-
   .cast-section { padding: 32px 16px 72px; }
   .cast-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .cast-name { font-size: 1rem; }
-  .cast-age { font-size: 0.58rem; }
   .cast-info { padding: 12px; }
-  .cast-fee { font-size: 0.95rem; }
-
   .pagination { padding: 0 16px 56px; gap: 6px; }
   .page-btn { width: 36px; height: 36px; font-size: 0.78rem; }
-
   .cta-band { padding: 36px 20px; flex-direction: column; text-align: center; gap: 16px; }
   .cta-band-btns { justify-content: center; flex-direction: column; width: 100%; }
   .cta-band-btns .btn-p, .cta-band-btns .btn-o { width: 100%; text-align: center; }
   .cta-band-tel { font-size: 2rem; }
-
   footer { grid-template-columns: 1fr; padding: 36px 20px; }
   .f-links { text-align: left; flex-direction: row; flex-wrap: wrap; gap: 14px; }
-
-  /* Modal mobile */
   #modal-box { flex-direction: column !important; }
   #modal-img { width: 100% !important; min-height: 160px !important; font-size: 4rem !important; }
 }
@@ -589,36 +508,34 @@ footer {
 
 <nav>
   <a href="index.html" class="nav-logo">
-    温泉むすめ
-    <span class="nav-logo-kana">ONSEN MUSUME</span>
+    パラダイス伊豆長岡
+    <span class="nav-logo-sub">PARADISE IZU-NAGAOKA</span>
   </a>
   <ul class="nav-links">
-    <li><a href="index.html#cast">在籍</a></li>
-    <li><a href="index.html#course">料金</a></li>
-    <li><a href="index.html#access">案内</a></li>
     <li><a href="index.html#recruit" class="nav-cta">求人</a></li>
+    <li><a href="cast.html" class="active">在籍</a></li>
+    <li><a href="index.html#menu">料金</a></li>
+    <li><a href="index.html#access">案内</a></li>
   </ul>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="メニュー">
     <span></span><span></span><span></span>
   </button>
 </nav>
 
-<!-- Mobile Drawer -->
 <div class="mobile-drawer" id="mobile-drawer">
   <ul>
-    <li><a href="cast.html" onclick="closeMenu()">在　籍</a></li>
-    <li><a href="index.html#course" onclick="closeMenu()">料　金</a></li>
-    <li><a href="index.html#access" onclick="closeMenu()">案　内</a></li>
+    <li><a href="cast.html" onclick="closeMenu()">キャスト</a></li>
+    <li><a href="index.html#menu" onclick="closeMenu()">メニュー</a></li>
+    <li><a href="index.html#access" onclick="closeMenu()">アクセス</a></li>
   </ul>
   <a href="index.html#recruit" class="drawer-cta" onclick="closeMenu()">求　人</a>
-  <p class="drawer-hours">22:00 〜 翌10:00 ／ 年中無休</p>
+  <p class="drawer-hours">12:00 〜 22:00 ／ 年中無休</p>
 </div>
 
-<!-- Page Header -->
 <div class="page-header">
   <div class="page-header-accent"></div>
   <span class="ph-label">— CAST LINEUP —</span>
-  <h1 class="ph-title">在籍一覧</h1>
+  <h1 class="ph-title">キャスト一覧</h1>
   <p class="ph-sub">伊豆の国より、あなたへ。花のような女性たち。</p>
   <div class="kdiv">
     <div class="kdiv-line"></div>
@@ -627,346 +544,134 @@ footer {
   </div>
 </div>
 
-<!-- Filter bar -->
 <div class="filter-bar">
   <span class="filter-label">絞り込み</span>
   <button class="filter-btn active" onclick="setFilter(this)">すべて</button>
   <button class="filter-btn" onclick="setFilter(this)">出勤中</button>
   <button class="filter-btn" onclick="setFilter(this)">NEW</button>
-  <button class="filter-btn" onclick="setFilter(this)">スタッフおすすめ</button>
-  <button class="filter-btn" onclick="setFilter(this)">清楚系</button>
-  <button class="filter-btn" onclick="setFilter(this)">グラマー</button>
-  <button class="filter-btn" onclick="setFilter(this)">お姉さん系</button>
+  <button class="filter-btn" onclick="setFilter(this)">おすすめ</button>
   <div class="sort-wrap">
     <span class="sort-label">並び替え</span>
     <select class="sort-select">
       <option>新着順</option>
-      <option>年齢が若い順</option>
-      <option>料金が安い順</option>
       <option>人気順</option>
+      <option>在籍期間順</option>
     </select>
   </div>
 </div>
 
-<!-- Cast grid -->
 <section class="cast-section">
-  <div class="cast-count">全12名在籍中</div>
+  <div class="cast-count">全5名在籍中</div>
   <div class="cast-grid">
 
-    <!-- 1 -->
-    <div class="cast-card" onclick="openModal('aoi')">
+    <div class="cast-card" id="card-reika">
       <div class="cast-img">
-        <span class="cast-kanji">葵</span>
-        <span class="badge badge-new">NEW</span>
-        <div class="status-dot"><div class="dot dot-avail"></div><span class="dot-label">出勤中</span></div>
-      </div>
-      <div class="cast-info">
-        <div class="cast-name">葵（あおい）</div>
-        <div class="cast-meta">
-          <span class="cast-age">22歳</span>
-          <span class="meta-sep">|</span>
-          <span class="cast-cup">Aカップ</span>
-        </div>
-        <div class="cast-tags">
-          <span class="tag">清楚系</span>
-          <span class="tag">癒し</span>
-          <span class="tag">未経験</span>
-        </div>
-        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
-      </div>
-      <div class="cast-card-btn">プロフィールを見る</div>
-    </div>
-
-    <!-- 2 -->
-    <div class="cast-card" onclick="openModal('sakura')">
-      <div class="cast-img">
-        <span class="cast-kanji">桜</span>
+        <span class="cast-kanji">麗</span>
         <span class="badge badge-pick">おすすめ</span>
-        <div class="status-dot"><div class="dot dot-avail"></div><span class="dot-label">出勤中</span></div>
-      </div>
-      <div class="cast-info">
-        <div class="cast-name">桜（さくら）</div>
-        <div class="cast-meta">
-          <span class="cast-age">25歳</span>
-          <span class="meta-sep">|</span>
-          <span class="cast-cup">Dカップ</span>
+        <div class="status-dot" id="status-reika" onclick="cycleStatus(event,'reika')">
+          <div class="dot dot-avail" id="dot-reika"></div>
+          <span class="dot-label" id="label-reika">出勤中</span>
         </div>
-        <div class="cast-tags">
-          <span class="tag">グラマー</span>
-          <span class="tag">情熱的</span>
-          <span class="tag">指名多数</span>
-        </div>
-        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
       </div>
-      <div class="cast-card-btn">プロフィールを見る</div>
+      <div class="cast-info" onclick="openModal('reika')">
+        <div class="cast-name">れいか</div>
+        <div class="cast-meta"><span class="cast-age">22歳 / 154cm</span></div>
+        <div class="cast-tags"><span class="tag">癒し系</span><span class="tag">甘えん坊</span><span class="tag">人懐っこい</span></div>
+      </div>
+      <div class="cast-card-btn" onclick="openModal('reika')">プロフィールを見る</div>
     </div>
 
-    <!-- 3 -->
-    <div class="cast-card" onclick="openModal('hana')">
-      <div class="cast-img">
-        <span class="cast-kanji">花</span>
-        <span class="badge badge-new">NEW</span>
-        <div class="status-dot"><div class="dot dot-busy"></div><span class="dot-label">接客中</span></div>
-      </div>
-      <div class="cast-info">
-        <div class="cast-name">花（はな）</div>
-        <div class="cast-meta">
-          <span class="cast-age">20歳</span>
-          <span class="meta-sep">|</span>
-          <span class="cast-cup">Cカップ</span>
-        </div>
-        <div class="cast-tags">
-          <span class="tag">天然</span>
-          <span class="tag">初々しい</span>
-        </div>
-        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
-      </div>
-      <div class="cast-card-btn">プロフィールを見る</div>
-    </div>
-
-    <!-- 4 -->
-    <div class="cast-card" onclick="openModal('yuki')">
+    <div class="cast-card" id="card-yuki">
       <div class="cast-img">
         <span class="cast-kanji">雪</span>
-        <div class="status-dot"><div class="dot dot-avail"></div><span class="dot-label">出勤中</span></div>
-      </div>
-      <div class="cast-info">
-        <div class="cast-name">雪（ゆき）</div>
-        <div class="cast-meta">
-          <span class="cast-age">28歳</span>
-          <span class="meta-sep">|</span>
-          <span class="cast-cup">Eカップ</span>
+        <div class="status-dot" id="status-yuki" onclick="cycleStatus(event,'yuki')">
+          <div class="dot dot-avail" id="dot-yuki"></div>
+          <span class="dot-label" id="label-yuki">出勤中</span>
         </div>
-        <div class="cast-tags">
-          <span class="tag">お姉さん系</span>
-          <span class="tag">熟練</span>
-        </div>
-        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
       </div>
-      <div class="cast-card-btn">プロフィールを見る</div>
+      <div class="cast-info" onclick="openModal('yuki')">
+        <div class="cast-name">ゆき</div>
+        <div class="cast-meta"><span class="cast-age">21歳 / 156cm</span></div>
+        <div class="cast-tags"><span class="tag">明るい</span><span class="tag">人懐っこい</span></div>
+      </div>
+      <div class="cast-card-btn" onclick="openModal('yuki')">プロフィールを見る</div>
     </div>
 
-    <!-- 5 -->
-    <div class="cast-card" onclick="openModal('ume')">
+    <div class="cast-card" id="card-haku">
       <div class="cast-img">
-        <span class="cast-kanji">梅</span>
-        <span class="badge badge-hot">人気</span>
-        <div class="status-dot"><div class="dot dot-avail"></div><span class="dot-label">出勤中</span></div>
-      </div>
-      <div class="cast-info">
-        <div class="cast-name">梅（うめ）</div>
-        <div class="cast-meta">
-          <span class="cast-age">23歳</span>
-          <span class="meta-sep">|</span>
-          <span class="cast-cup">Bカップ</span>
-        </div>
-        <div class="cast-tags">
-          <span class="tag">ロリ系</span>
-          <span class="tag">甘えん坊</span>
-        </div>
-        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
-      </div>
-      <div class="cast-card-btn">プロフィールを見る</div>
-    </div>
-
-    <!-- 6 -->
-    <div class="cast-card" onclick="openModal('kurenai')">
-      <div class="cast-img">
-        <span class="cast-kanji">紅</span>
-        <div class="status-dot"><div class="dot dot-off"></div><span class="dot-label">本日休み</span></div>
-      </div>
-      <div class="cast-info">
-        <div class="cast-name">紅（くれない）</div>
-        <div class="cast-meta">
-          <span class="cast-age">26歳</span>
-          <span class="meta-sep">|</span>
-          <span class="cast-cup">Fカップ</span>
-        </div>
-        <div class="cast-tags">
-          <span class="tag">グラマー</span>
-          <span class="tag">大人っぽい</span>
-        </div>
-        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
-      </div>
-      <div class="cast-card-btn">プロフィールを見る</div>
-    </div>
-
-    <!-- 7 -->
-    <div class="cast-card" onclick="openModal('ran')">
-      <div class="cast-img">
-        <span class="cast-kanji">蘭</span>
+        <span class="cast-kanji">白</span>
         <span class="badge badge-new">NEW</span>
-        <div class="status-dot"><div class="dot dot-avail"></div><span class="dot-label">出勤中</span></div>
-      </div>
-      <div class="cast-info">
-        <div class="cast-name">蘭（らん）</div>
-        <div class="cast-meta">
-          <span class="cast-age">21歳</span>
-          <span class="meta-sep">|</span>
-          <span class="cast-cup">Cカップ</span>
+        <div class="status-dot" id="status-haku" onclick="cycleStatus(event,'haku')">
+          <div class="dot dot-avail" id="dot-haku"></div>
+          <span class="dot-label" id="label-haku">出勤中</span>
         </div>
-        <div class="cast-tags">
-          <span class="tag">スレンダー</span>
-          <span class="tag">清楚系</span>
-        </div>
-        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
       </div>
-      <div class="cast-card-btn">プロフィールを見る</div>
+      <div class="cast-info" onclick="openModal('haku')">
+        <div class="cast-name">はく</div>
+        <div class="cast-meta"><span class="cast-age">24歳 / 168cm</span></div>
+        <div class="cast-tags"><span class="tag">癒し系</span><span class="tag">新人</span></div>
+      </div>
+      <div class="cast-card-btn" onclick="openModal('haku')">プロフィールを見る</div>
     </div>
 
-    <!-- 8 -->
-    <div class="cast-card" onclick="openModal('kiku')">
+    <div class="cast-card" id="card-milky">
       <div class="cast-img">
-        <span class="cast-kanji">菊</span>
-        <span class="badge badge-pick">おすすめ</span>
-        <div class="status-dot"><div class="dot dot-busy"></div><span class="dot-label">接客中</span></div>
-      </div>
-      <div class="cast-info">
-        <div class="cast-name">菊（きく）</div>
-        <div class="cast-meta">
-          <span class="cast-age">30歳</span>
-          <span class="meta-sep">|</span>
-          <span class="cast-cup">Dカップ</span>
-        </div>
-        <div class="cast-tags">
-          <span class="tag">お姉さん系</span>
-          <span class="tag">癒し</span>
-          <span class="tag">熟練</span>
-        </div>
-        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
-      </div>
-      <div class="cast-card-btn">プロフィールを見る</div>
-    </div>
-
-    <!-- 9 -->
-    <div class="cast-card" onclick="openModal('tsubaki')">
-      <div class="cast-img">
-        <span class="cast-kanji">椿</span>
-        <div class="status-dot"><div class="dot dot-avail"></div><span class="dot-label">出勤中</span></div>
-      </div>
-      <div class="cast-info">
-        <div class="cast-name">椿（つばき）</div>
-        <div class="cast-meta">
-          <span class="cast-age">24歳</span>
-          <span class="meta-sep">|</span>
-          <span class="cast-cup">Eカップ</span>
-        </div>
-        <div class="cast-tags">
-          <span class="tag">グラマー</span>
-          <span class="tag">ぽっちゃり</span>
-        </div>
-        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
-      </div>
-      <div class="cast-card-btn">プロフィールを見る</div>
-    </div>
-
-    <!-- 10 -->
-    <div class="cast-card" onclick="openModal('fuji')">
-      <div class="cast-img">
-        <span class="cast-kanji">藤</span>
-        <span class="badge badge-hot">人気</span>
-        <div class="status-dot"><div class="dot dot-off"></div><span class="dot-label">本日休み</span></div>
-      </div>
-      <div class="cast-info">
-        <div class="cast-name">藤（ふじ）</div>
-        <div class="cast-meta">
-          <span class="cast-age">27歳</span>
-          <span class="meta-sep">|</span>
-          <span class="cast-cup">Cカップ</span>
-        </div>
-        <div class="cast-tags">
-          <span class="tag">ギャル</span>
-          <span class="tag">明るい</span>
-        </div>
-        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
-      </div>
-      <div class="cast-card-btn">プロフィールを見る</div>
-    </div>
-
-    <!-- 11 -->
-    <div class="cast-card" onclick="openModal('suzu')">
-      <div class="cast-img">
-        <span class="cast-kanji">鈴</span>
+        <span class="cast-kanji">乳</span>
         <span class="badge badge-new">NEW</span>
-        <div class="status-dot"><div class="dot dot-avail"></div><span class="dot-label">出勤中</span></div>
-      </div>
-      <div class="cast-info">
-        <div class="cast-name">鈴（すず）</div>
-        <div class="cast-meta">
-          <span class="cast-age">19歳</span>
-          <span class="meta-sep">|</span>
-          <span class="cast-cup">Bカップ</span>
+        <div class="status-dot" id="status-milky" onclick="cycleStatus(event,'milky')">
+          <div class="dot dot-busy" id="dot-milky"></div>
+          <span class="dot-label" id="label-milky">接客中</span>
         </div>
-        <div class="cast-tags">
-          <span class="tag">天然</span>
-          <span class="tag">ピュア</span>
-          <span class="tag">未経験</span>
-        </div>
-        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
       </div>
-      <div class="cast-card-btn">プロフィールを見る</div>
+      <div class="cast-info" onclick="openModal('milky')">
+        <div class="cast-name">みるき</div>
+        <div class="cast-meta"><span class="cast-age">18歳 / 146cm</span></div>
+        <div class="cast-tags"><span class="tag">甘えん坊</span><span class="tag">人懐っこい</span></div>
+      </div>
+      <div class="cast-card-btn" onclick="openModal('milky')">プロフィールを見る</div>
     </div>
 
-    <!-- 12 -->
-    <div class="cast-card" onclick="openModal('an')">
+    <div class="cast-card" id="card-mona">
       <div class="cast-img">
-        <span class="cast-kanji">杏</span>
-        <div class="status-dot"><div class="dot dot-avail"></div><span class="dot-label">出勤中</span></div>
-      </div>
-      <div class="cast-info">
-        <div class="cast-name">杏（あん）</div>
-        <div class="cast-meta">
-          <span class="cast-age">29歳</span>
-          <span class="meta-sep">|</span>
-          <span class="cast-cup">Gカップ</span>
+        <span class="cast-kanji">萌</span>
+        <div class="status-dot" id="status-mona" onclick="cycleStatus(event,'mona')">
+          <div class="dot dot-avail" id="dot-mona"></div>
+          <span class="dot-label" id="label-mona">出勤中</span>
         </div>
-        <div class="cast-tags">
-          <span class="tag">爆乳</span>
-          <span class="tag">包容力</span>
-        </div>
-        <div class="cast-fee">¥15,000<small>〜 / 60分</small></div>
       </div>
-      <div class="cast-card-btn">プロフィールを見る</div>
+      <div class="cast-info" onclick="openModal('mona')">
+        <div class="cast-name">もな</div>
+        <div class="cast-meta"><span class="cast-age">25歳 / 157cm</span></div>
+        <div class="cast-tags"><span class="tag">明るい</span><span class="tag">甘えん坊</span><span class="tag">天然</span></div>
+      </div>
+      <div class="cast-card-btn" onclick="openModal('mona')">プロフィールを見る</div>
     </div>
 
-  </div><!-- /cast-grid -->
+  </div>
 </section>
 
-<!-- Pagination -->
-<div class="pagination">
-  <button class="page-btn active" onclick="setPage(this)">1</button>
-  <button class="page-btn" onclick="setPage(this)">2</button>
-  <button class="page-btn" onclick="setPage(this)">3</button>
-  <span class="page-dots">…</span>
-  <button class="page-btn" onclick="setPage(this)">8</button>
-</div>
-
-<!-- CTA band -->
 <div class="cta-band">
   <div class="cta-band-text">
     <span class="s-label">— お問い合わせ —</span>
-    <h3>気になる女性がいたら<br>お気軽にご連絡を</h3>
+    <h3>気になるキャストがいたら<br>お気軽にご連絡を</h3>
   </div>
   <a href="tel:070-3278-1445" class="cta-band-tel">070-3278-1445</a>
   <div class="cta-band-btns">
     <a href="tel:070-3278-1445" class="btn-p">今すぐ電話する</a>
-    
   </div>
 </div>
 
 <footer>
   <div>
-    <span class="f-logo">温泉むすめ</span>
+    <span class="f-logo">パラダイス伊豆長岡</span>
     <p class="f-copy">
       © 2025 パラダイス伊豆長岡. All Rights Reserved.<br>
-      当店はの規制及び業務の適正化等に関する法律に基づき適正に営業しております。<br>
-      18歳未満の方のご利用・ご応募は固くお断りいたします。
+      18歳未満の方のご入店はお断りいたします。
     </p>
   </div>
   <ul class="f-links">
     <li><a href="privacy.html">プライバシーポリシー</a></li>
     <li><a href="tokushoho.html">特定商取引法</a></li>
-    <li><a href="disclaimer.html">免責事項</a></li>
     <li><a href="index.html">トップへ戻る</a></li>
   </ul>
 </footer>
@@ -981,7 +686,7 @@ footer {
     max-width:540px; width:90%; position:relative;
     animation:modalIn 0.35s ease;
   ">
-    <div id="modal-top" style="height:3px; background:linear-gradient(to right, transparent, var(--crimson), transparent);"></div>
+    <div style="height:3px; background:linear-gradient(to right, transparent, var(--crimson), transparent);"></div>
     <button onclick="closeModal()" style="
       position:absolute; top:14px; right:16px;
       background:none; border:none; color:var(--ivory);
@@ -990,7 +695,6 @@ footer {
     " onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.5">✕</button>
 
     <div style="display:flex; gap:0;">
-      <!-- Image panel -->
       <div id="modal-img" style="
         width:180px; flex-shrink:0;
         display:flex; align-items:center; justify-content:center;
@@ -998,20 +702,17 @@ footer {
         font-family:'Zen Antique',serif; font-size:6rem;
         color:var(--crimson); opacity:0.9; min-height:240px;
       "></div>
-      <!-- Info panel -->
       <div style="padding:28px 24px; flex:1;">
         <span id="modal-label" style="font-size:0.55rem;letter-spacing:0.4em;color:var(--gold);display:block;margin-bottom:8px;"></span>
         <div id="modal-name" style="font-family:'Zen Antique',serif;font-size:1.8rem;letter-spacing:0.15em;margin-bottom:4px;"></div>
-        <div id="modal-age" style="font-size:0.68rem;color:var(--gold);letter-spacing:0.2em;margin-bottom:16px;"></div>
+        <div id="modal-exp" style="font-size:0.68rem;color:var(--gold);letter-spacing:0.2em;margin-bottom:16px;"></div>
         <div id="modal-tags" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;"></div>
         <div id="modal-bio" style="font-size:0.78rem;line-height:2.1;opacity:0.6;margin-bottom:20px;"></div>
-        <div id="modal-fee" style="font-family:'Shippori Mincho',serif;font-size:1.3rem;color:var(--gold);font-weight:600;margin-bottom:20px;"></div>
       </div>
     </div>
 
     <div style="padding:0 24px 24px;display:flex;gap:12px;">
-      <a href="tel:070-3278-1445" class="btn-p" style="flex:1;text-align:center;font-size:0.7rem;padding:13px;">今すぐ電話で予約</a>
-      
+      <a href="tel:070-3278-1445" class="btn-p" style="flex:1;text-align:center;font-size:0.7rem;padding:13px;">お問い合わせ・ご予約</a>
     </div>
   </div>
 </div>
@@ -1021,7 +722,6 @@ footer {
   from { opacity:0; transform:translateY(20px); }
   to   { opacity:1; transform:translateY(0); }
 }
-.cast-card { cursor: pointer; }
 </style>
 
 <script>
@@ -1039,18 +739,11 @@ function closeMenu() {
 }
 
 const castData = {
-  aoi:     { kanji:'葵', name:'葵（あおい）', label:'NEW / 出勤中', age:'22歳 / Aカップ', tags:['清楚系','癒し','未経験'], bio:'伊豆の国出身の清楚系美女。おっとりとした話し方と柔らかい笑顔が魅力。癒しのひとときをお約束します。', fee:'¥15,000〜 / 60分' },
-  sakura:  { kanji:'桜', name:'桜（さくら）', label:'スタッフおすすめ / 出勤中', age:'25歳 / Dカップ', tags:['グラマー','情熱的','指名多数'], bio:'情熱的でグラマーな桜ちゃん。高い技術と明るい笑顔で多くのお客様に指名いただいています。', fee:'¥15,000〜 / 60分' },
-  hana:    { kanji:'花', name:'花（はな）', label:'NEW / 接客中', age:'20歳 / Cカップ', tags:['天然','初々しい'], bio:'入店したばかりの初々しい花ちゃん。天然で純粋な笑顔があなたの心を和ませてくれます。', fee:'¥15,000〜 / 60分' },
-  yuki:    { kanji:'雪', name:'雪（ゆき）', label:'出勤中', age:'28歳 / Eカップ', tags:['お姉さん系','熟練'], bio:'落ち着いた雰囲気とたっぷりの包容力が魅力のお姉さん系。経験豊富な接客でゆったりとした時間をご提供します。', fee:'¥15,000〜 / 60分' },
-  ume:     { kanji:'梅', name:'梅（うめ）', label:'人気 / 出勤中', age:'23歳 / Bカップ', tags:['ロリ系','甘えん坊'], bio:'小柄で甘えん坊の梅ちゃん。ふわふわした雰囲気と甘い声に多くのファンがいます。', fee:'¥15,000〜 / 60分' },
-  kurenai: { kanji:'紅', name:'紅（くれない）', label:'本日休み', age:'26歳 / Fカップ', tags:['グラマー','大人っぽい'], bio:'洗練された大人の魅力を持つ紅ちゃん。豊かなボディと艶のある笑顔で特別な夜をお届けします。', fee:'¥15,000〜 / 60分' },
-  ran:     { kanji:'蘭', name:'蘭（らん）', label:'NEW / 出勤中', age:'21歳 / Cカップ', tags:['スレンダー','清楚系'], bio:'すっきりとしたスレンダーボディと清楚な笑顔が印象的な蘭ちゃん。丁寧な接客を心がけています。', fee:'¥15,000〜 / 60分' },
-  kiku:    { kanji:'菊', name:'菊（きく）', label:'おすすめ / 接客中', age:'30歳 / Dカップ', tags:['お姉さん系','癒し','熟練'], bio:'ベテランの菊ちゃんは高い技術と深い癒しの雰囲気が魅力。初めての方でも安心してお任せください。', fee:'¥15,000〜 / 60分' },
-  tsubaki: { kanji:'椿', name:'椿（つばき）', label:'出勤中', age:'24歳 / Eカップ', tags:['グラマー','ぽっちゃり'], bio:'柔らかくグラマーな体型で包み込むような癒しを提供します。明るく元気な性格でお話も弾みます。', fee:'¥15,000〜 / 60分' },
-  fuji:    { kanji:'藤', name:'藤（ふじ）', label:'人気 / 本日休み', age:'27歳 / Cカップ', tags:['ギャル','明るい'], bio:'とにかく明るくて楽しい藤ちゃん。会っているだけで元気になれると大好評。次回の出勤をお楽しみに！', fee:'¥15,000〜 / 60分' },
-  suzu:    { kanji:'鈴', name:'鈴（すず）', label:'NEW / 出勤中', age:'19歳 / Bカップ', tags:['天然','ピュア','未経験'], bio:'初々しくピュアな鈴ちゃん。一生懸命さと可愛らしい笑顔で一緒に素敵な時間を過ごしましょう。', fee:'¥15,000〜 / 60分' },
-  an:      { kanji:'杏', name:'杏（あん）', label:'出勤中', age:'29歳 / Gカップ', tags:['爆乳','包容力'], bio:'豊満なボディと深い包容力で絶大な人気を誇る杏ちゃん。温かみのある接客でお客様を幸せにします。', fee:'¥15,000〜 / 60分' },
+  reika:  { kanji:'麗', name:'れいか', label:'おすすめ / 出勤中', exp:'キャスト歴 1年', tags:['癒し系','笑顔'], bio:'穏やかな雰囲気と明るい笑顔でお客様を癒してくれるれいかちゃん。丁寧な接客が大好評です。' },
+  yuki:   { kanji:'雪', name:'ゆき',   label:'出勤中',            exp:'キャスト歴 2年', tags:['クール系','落ち着いた'], bio:'クールでスタイリッシュなゆきちゃん。落ち着いた会話の中にふと見せる笑顔がたまらないと人気です。' },
+  haku:   { kanji:'白', name:'はく',   label:'NEW / 出勤中',      exp:'キャスト歴 2ヶ月', tags:['天然','新人'], bio:'天然で素直なはくちゃん。入店したばかりですが、その純粋さと笑顔で早くもファンが増えています。' },
+  milky:  { kanji:'乳', name:'みるき', label:'NEW / 接客中',      exp:'キャスト歴 1ヶ月', tags:['元気系','初々しい'], bio:'明るく元気なみるきちゃん。一生懸命な姿と初々しい雰囲気がとても愛らしいと好評です。' },
+  mona:   { kanji:'萌', name:'もな',   label:'出勤中',            exp:'キャスト歴 8ヶ月', tags:['明るい','おしゃべり好き'], bio:'話題豊富でとにかく明るいもなちゃん。一緒にいるとあっという間に時間が過ぎてしまいます。' },
 };
 
 function openModal(id) {
@@ -1059,33 +752,180 @@ function openModal(id) {
   document.getElementById('modal-img').textContent = d.kanji;
   document.getElementById('modal-label').textContent = d.label;
   document.getElementById('modal-name').textContent = d.name;
-  document.getElementById('modal-age').textContent = d.age;
+  document.getElementById('modal-exp').textContent = d.exp;
   document.getElementById('modal-bio').textContent = d.bio;
-  document.getElementById('modal-fee').textContent = d.fee;
   const tagsEl = document.getElementById('modal-tags');
   tagsEl.innerHTML = d.tags.map(t => `<span class="tag">${t}</span>`).join('');
   const overlay = document.getElementById('modal-overlay');
   overlay.style.display = 'flex';
   document.body.style.overflow = 'hidden';
 }
-
 function closeModal() {
   document.getElementById('modal-overlay').style.display = 'none';
   document.body.style.overflow = '';
 }
-
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+// ステータス切り替え：出勤中 → 接客中 → 本日休み → 出勤中
+const statusCycle = ['avail', 'busy', 'off'];
+const statusLabels = { avail: '出勤中', busy: '接客中', off: '本日休み' };
+const statusState = { reika: 'avail', yuki: 'avail', haku: 'avail', milky: 'busy', mona: 'avail' };
+
+// パスワード管理
+const ADMIN_PASSWORD = 'paradise2025'; // ここを変えてください
+let isAdmin = false;
+
+function cycleStatus(e, id) {
+  e.stopPropagation();
+  if (!isAdmin) {
+    showPasswordModal();
+    return;
+  }
+  const current = statusState[id];
+  const idx = statusCycle.indexOf(current);
+  const next = statusCycle[(idx + 1) % statusCycle.length];
+  statusState[id] = next;
+  const dot = document.getElementById('dot-' + id);
+  const label = document.getElementById('label-' + id);
+  dot.className = 'dot dot-' + next;
+  label.textContent = statusLabels[next];
+}
+
+function showPasswordModal() {
+  document.getElementById('pw-modal').style.display = 'flex';
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-error').style.display = 'none';
+  setTimeout(() => document.getElementById('pw-input').focus(), 100);
+}
+
+function closePasswordModal() {
+  document.getElementById('pw-modal').style.display = 'none';
+}
+
+function submitPassword() {
+  const val = document.getElementById('pw-input').value;
+  if (val === ADMIN_PASSWORD) {
+    isAdmin = true;
+    closePasswordModal();
+    document.getElementById('admin-lock-btn').innerHTML = '🔓';
+    document.getElementById('admin-lock-btn').title = '管理モード中（クリックでロック）';
+    // ステータスドットにヒント表示
+    document.querySelectorAll('.status-dot').forEach(el => {
+      el.style.borderColor = 'rgba(200,169,81,0.5)';
+    });
+  } else {
+    document.getElementById('pw-error').style.display = 'block';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+
+function toggleAdmin() {
+  if (isAdmin) {
+    isAdmin = false;
+    document.getElementById('admin-lock-btn').innerHTML = '🔒';
+    document.getElementById('admin-lock-btn').title = '管理者ログイン';
+    document.querySelectorAll('.status-dot').forEach(el => {
+      el.style.borderColor = '';
+    });
+  } else {
+    showPasswordModal();
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeModal();
+    closePasswordModal();
+  }
+  if (e.key === 'Enter' && document.getElementById('pw-modal').style.display === 'flex') {
+    submitPassword();
+  }
+});
 
 function setFilter(btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }
-
 function setPage(btn) {
   document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 }
 </script>
+
+<!-- 管理者ロックボタン -->
+<button id="admin-lock-btn" onclick="toggleAdmin()" title="管理者ログイン" style="
+  position: fixed; bottom: 28px; right: 28px;
+  width: 48px; height: 48px;
+  background: var(--dark-2);
+  border: 1px solid var(--border-gold);
+  color: var(--gold);
+  font-size: 1.3rem;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 500;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  transition: border-color 0.3s, background 0.3s;
+">🔒</button>
+
+<!-- パスワードモーダル -->
+<div id="pw-modal" onclick="closePasswordModal()" style="
+  display: none; position: fixed; inset: 0;
+  background: rgba(10,5,5,0.9);
+  z-index: 2000; backdrop-filter: blur(8px);
+  align-items: center; justify-content: center;
+">
+  <div onclick="event.stopPropagation()" style="
+    background: var(--dark-2);
+    border: 1px solid var(--border-gold);
+    padding: 40px 36px;
+    width: 90%; max-width: 360px;
+    text-align: center;
+    animation: modalIn 0.3s ease;
+  ">
+    <div style="height:2px; background:linear-gradient(to right,transparent,var(--crimson),transparent); margin-bottom:28px;"></div>
+    <div style="font-family:'Zen Antique',serif; font-size:1.1rem; letter-spacing:0.2em; margin-bottom:6px;">管理者ログイン</div>
+    <div style="font-size:0.6rem; letter-spacing:0.3em; opacity:0.4; margin-bottom:24px;">ADMIN LOGIN</div>
+    <input id="pw-input" type="password" placeholder="パスワードを入力" style="
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-gold);
+      color: var(--ivory);
+      padding: 12px 16px;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      outline: none;
+      margin-bottom: 8px;
+      text-align: center;
+    ">
+    <div id="pw-error" style="
+      display: none;
+      font-size: 0.62rem; color: var(--crimson-light);
+      letter-spacing: 0.2em; margin-bottom: 8px;
+    ">パスワードが違います</div>
+    <div style="display:flex; gap:10px; margin-top:16px;">
+      <button onclick="closePasswordModal()" style="
+        flex:1; background:transparent;
+        border:1px solid var(--border-gold);
+        color:var(--ivory); padding:11px;
+        font-family:'Noto Serif JP',serif;
+        font-size:0.68rem; letter-spacing:0.25em;
+        cursor:pointer; opacity:0.6;
+        transition: opacity 0.2s;
+      " onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0.6">キャンセル</button>
+      <button onclick="submitPassword()" style="
+        flex:1; background:var(--crimson);
+        border:1px solid #a02020;
+        color:var(--ivory); padding:11px;
+        font-family:'Noto Serif JP',serif;
+        font-size:0.68rem; letter-spacing:0.25em;
+        cursor:pointer;
+        transition: background 0.2s;
+      " onmouseover="this.style.background='#c0392b'" onmouseout="this.style.background='var(--crimson)'">ログイン</button>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
